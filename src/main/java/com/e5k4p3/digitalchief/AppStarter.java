@@ -1,13 +1,13 @@
-package com.e5k4p3.test;
+package com.e5k4p3.digitalchief;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TestApplication {
+public class AppStarter {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TestApplication.class, args);
+		SpringApplication.run(AppStarter.class, args);
 	}
 
 }
