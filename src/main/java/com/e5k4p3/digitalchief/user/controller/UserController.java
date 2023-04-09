@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserController {
@@ -40,7 +40,8 @@ public class UserController {
                                           BindingResult bindingResult,
                                           @PathVariable Long userId,
                                           @RequestHeader("X-Requester-Id") Long requesterId) {
-        log.debug("Получен PATCH запрос на изменение пользователя с id " + userId + ".");
+        log.debug("Получен PATCH запрос на изменение пользователя с id " + userId +
+                " от пользователя с id " + requesterId + ".");
         ValidationErrorsHandler.logValidationErrors(bindingResult);
         return userService.updateUser(userRequestDto, userId, requesterId);
     }
@@ -49,7 +50,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long userId,
                            @RequestHeader("X-Requester-Id") Long requesterId) {
-        log.debug("Получен DELETE запрос на удаление пользователя с id " + userId + ".");
+        log.debug("Получен DELETE запрос на удаление пользователя с id " + userId +
+                " от пользователя с id " + requesterId + ".");
         userService.deleteUser(userId, requesterId);
     }
 

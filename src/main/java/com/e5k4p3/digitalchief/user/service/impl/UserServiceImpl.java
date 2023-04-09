@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -96,7 +95,7 @@ public class UserServiceImpl implements UserService {
         log.info("Возвращаем данные всех пользователей.");
         return userRepository.findAll(PageRequest.of((from / size), size)).stream()
                 .map(UserMapper::toUserResponseFullDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -28,4 +30,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     UserGender gender;
+    @Column(name = "created", nullable = false)
+    LocalDateTime created;
 }

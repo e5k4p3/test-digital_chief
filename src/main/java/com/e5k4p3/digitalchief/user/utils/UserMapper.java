@@ -6,6 +6,8 @@ import com.e5k4p3.digitalchief.user.dto.UserResponseShortDto;
 import com.e5k4p3.digitalchief.user.model.User;
 import lombok.experimental.UtilityClass;
 
+import java.time.LocalDateTime;
+
 @UtilityClass
 public final class UserMapper {
     public static User toUser(UserRequestDto userRequestDto) {
@@ -15,7 +17,8 @@ public final class UserMapper {
                 userRequestDto.getSurname(),
                 userRequestDto.getEmail(),
                 userRequestDto.getAge(),
-                userRequestDto.getGender()
+                userRequestDto.getGender(),
+                LocalDateTime.now()
         );
     }
 
@@ -32,6 +35,7 @@ public final class UserMapper {
 
     public static UserResponseShortDto toUserResponseShortDto(User user) {
         return new UserResponseShortDto(
+                user.getId(),
                 user.getName(),
                 user.getSurname()
         );
