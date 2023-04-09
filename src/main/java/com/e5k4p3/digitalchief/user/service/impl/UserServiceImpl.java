@@ -10,6 +10,7 @@ import com.e5k4p3.digitalchief.user.model.User;
 import com.e5k4p3.digitalchief.user.model.enums.UserGender;
 import com.e5k4p3.digitalchief.user.service.UserService;
 import com.e5k4p3.digitalchief.user.utils.UserMapper;
+import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,8 +27,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
+    final UserRepository userRepository;
+    final EntityManager entityManager;
 
+    @Override
     @Transactional
     public UserResponseFullDto createUser(UserRequestDto userRequestDto) {
         checkEmailExistence(userRequestDto.getEmail());
@@ -36,6 +39,7 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserResponseFullDto(userToAdd);
     }
 
+    @Override
     @Transactional
     public UserResponseFullDto updateUser(UserRequestDto userRequestDto, Long userId, Long requesterId) {
         checkUserIdAndRequesterId(userId, requesterId);
@@ -50,7 +54,7 @@ public class UserServiceImpl implements UserService {
         }
         if (userRequestDto.getSurname() != null && !userRequestDto.getSurname().isBlank()) {
             String oldSurname = userToUpdate.getSurname();
-            String newSurname = userToUpdate.getSurname();
+            String newSurname = userRequestDto.getSurname();
             userToUpdate.setSurname(newSurname);
             log.info(commonPhrase + " была изменена фамилия с " + oldSurname + " на " + newSurname + ".");
         }
@@ -70,6 +74,7 @@ public class UserServiceImpl implements UserService {
         return UserMapper.toUserResponseFullDto(userToUpdate);
     }
 
+    @Override
     @Transactional
     public void deleteUser(Long userId, Long requesterId) {
         checkUserIdAndRequesterId(userId, requesterId);
@@ -77,17 +82,28 @@ public class UserServiceImpl implements UserService {
         log.info("Пользователь с id " + userId + " был удален.");
     }
 
+    @Override
     @Transactional(readOnly = true)
     public UserResponseFullDto getUserById(Long userId) {
+        log.info("Возвращаем данные о пользователе с id " + userId + ".");
         return UserMapper.toUserResponseFullDto(userRepository.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("Пользователь с id " + userId + " не найден.")));
     }
 
+    @Override
     @Transactional(readOnly = true)
     public List<UserResponseFullDto> getAllUsers(Integer from, Integer size) {
+        log.info("Возвращаем данные всех пользователей.");
         return userRepository.findAll(PageRequest.of((from / size), size)).stream()
                 .map(UserMapper::toUserResponseFullDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void resetData() {
+        entityManager.createNativeQuery("TRUNCATE users RESTART IDENTITY").executeUpdate();
+        log.info("Данные обо всех пользователях удалены.");
     }
 
     private void checkEmailExistence(String email) {
@@ -96,11 +112,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private Boolean checkUserExistenceById(Long userId) {
+    private Long checkUserExistenceById(Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new EntityNotFoundException("Пользователь с id " + userId + " не найден.");
         }
-        return true;
+        return userId;
     }
 
     private void checkUserIdAndRequesterId(Long userId, Long requesterId) {

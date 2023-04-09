@@ -15,4 +15,6 @@ public interface UserService {
     UserResponseFullDto getUserById(Long userId);
 
     List<UserResponseFullDto> getAllUsers(Integer from, Integer size);
+
+    void resetData();
 }
