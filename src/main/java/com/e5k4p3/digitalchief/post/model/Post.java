@@ -1,6 +1,6 @@
 package com.e5k4p3.digitalchief.post.model;
 
-import com.e5k4p3.digitalchief.comment.Comment;
+import com.e5k4p3.digitalchief.comment.model.Comment;
 import com.e5k4p3.digitalchief.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,7 +29,6 @@ public class Post {
     @JoinColumn(name = "author", nullable = false)
     User author;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    @JoinColumn(name = "comments")
     List<Comment> comments;
     @Column(name = "created", nullable = false)
     LocalDateTime created;

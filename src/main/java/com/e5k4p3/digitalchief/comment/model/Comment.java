@@ -1,4 +1,4 @@
-package com.e5k4p3.digitalchief.comment;
+package com.e5k4p3.digitalchief.comment.model;
 
 import com.e5k4p3.digitalchief.post.model.Post;
 import com.e5k4p3.digitalchief.user.model.User;

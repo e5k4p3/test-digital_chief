@@ -73,7 +73,7 @@ public class UserController {
     @DeleteMapping("/debug")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void resetData() {
-        log.debug("Получен DELETE запрос на сброс всех данных о пользователях.");
+        log.debug("Получен DELETE запрос на удаление всех данных о пользователях.");
         userService.resetData();
     }
 }

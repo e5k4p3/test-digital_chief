@@ -4,6 +4,7 @@ import com.e5k4p3.digitalchief.exceptions.EntityAlreadyExistsException;
 import com.e5k4p3.digitalchief.exceptions.EntityNotFoundException;
 import com.e5k4p3.digitalchief.exceptions.ForbiddenOperationException;
 import com.e5k4p3.digitalchief.exceptions.ValidationException;
+import com.e5k4p3.digitalchief.post.controller.PostController;
 import com.e5k4p3.digitalchief.user.controller.UserController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {UserController.class})
+@RestControllerAdvice(assignableTypes = {UserController.class, PostController.class})
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)

@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void resetData() {
-        entityManager.createNativeQuery("TRUNCATE users RESTART IDENTITY").executeUpdate();
+        entityManager.createNativeQuery("TRUNCATE users RESTART IDENTITY CASCADE").executeUpdate();
         log.info("Данные обо всех пользователях удалены.");
     }
 

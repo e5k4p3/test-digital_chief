@@ -1,6 +1,6 @@
 package com.e5k4p3.digitalchief.post.dto;
 
-import com.e5k4p3.digitalchief.comment.CommentResponseDto;
+import com.e5k4p3.digitalchief.comment.dto.CommentResponseDto;
 import com.e5k4p3.digitalchief.user.dto.UserResponseShortDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

@@ -1,4 +1,4 @@
-package com.e5k4p3.digitalchief.comment;
+package com.e5k4p3.digitalchief.comment.dto;
 
 import com.e5k4p3.digitalchief.user.dto.UserResponseShortDto;
 import lombok.*;

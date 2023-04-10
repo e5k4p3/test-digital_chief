@@ -1,6 +1,6 @@
 package com.e5k4p3.digitalchief.post.utils;
 
-import com.e5k4p3.digitalchief.comment.CommentMapper;
+import com.e5k4p3.digitalchief.comment.util.CommentMapper;
 import com.e5k4p3.digitalchief.post.dto.PostRequestDto;
 import com.e5k4p3.digitalchief.post.dto.PostResponseDto;
 import com.e5k4p3.digitalchief.post.model.Post;

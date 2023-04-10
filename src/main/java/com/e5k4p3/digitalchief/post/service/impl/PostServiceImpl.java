@@ -1,7 +1,7 @@
 package com.e5k4p3.digitalchief.post.service.impl;
 
-import com.e5k4p3.digitalchief.comment.Comment;
-import com.e5k4p3.digitalchief.comment.CommentRepository;
+import com.e5k4p3.digitalchief.comment.model.Comment;
+import com.e5k4p3.digitalchief.comment.dao.CommentRepository;
 import com.e5k4p3.digitalchief.exceptions.EntityNotFoundException;
 import com.e5k4p3.digitalchief.exceptions.ForbiddenOperationException;
 import com.e5k4p3.digitalchief.post.dao.PostRepository;
@@ -62,12 +62,14 @@ public class PostServiceImpl implements PostService {
             String newTitle = postRequestDto.getTitle();
             postToUpdate.setTitle(newTitle);
             log.info(commonPhrase + " было изменено название с " + oldTitle + " на " + newTitle + ".");
+            postToUpdate.setEdited(true);
         }
         if (postRequestDto.getContent() != null && !postRequestDto.getContent().isBlank()) {
             String oldContent = postToUpdate.getContent();
             String newContent = postRequestDto.getContent();
             postToUpdate.setContent(newContent);
             log.info(commonPhrase + " был изменен контент с " + oldContent + " на " + newContent + ".");
+            postToUpdate.setEdited(true);
         }
         List<Comment> comments = commentRepository.findAllByPostId(postId);
         postToUpdate.setComments(comments);
@@ -102,7 +104,7 @@ public class PostServiceImpl implements PostService {
                 .peek(post -> post.setComments(commentRepository.findAllByPostId(post.getId())))
                 .peek(post -> post.setViews(post.getViews() + 1))
                 .map(PostMapper::toPostResponseDto)
-                .sorted(Comparator.comparingLong(PostResponseDto::getViews))
+                .sorted(Comparator.comparingLong(PostResponseDto::getViews).reversed())
                 .toList();
     }
 
@@ -150,7 +152,7 @@ public class PostServiceImpl implements PostService {
         log.info("Возвращаем данные обо всех постах с фильтрами поиска.");
 
         if (sort.equals(VIEWS)) {
-            return postsToGet.stream().sorted(Comparator.comparingLong(PostResponseDto::getViews)).toList();
+            return postsToGet.stream().sorted(Comparator.comparingLong(PostResponseDto::getViews).reversed()).toList();
         }
 
         return postsToGet;
@@ -159,7 +161,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void resetData() {
-        entityManager.createNativeQuery("TRUNCATE posts RESTART IDENTITY").executeUpdate();
+        entityManager.createNativeQuery("TRUNCATE posts RESTART IDENTITY CASCADE").executeUpdate();
         log.info("Данные обо всех постах удалены.");
     }
 
