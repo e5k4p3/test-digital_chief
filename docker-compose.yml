@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  main:
+    build: .
+    container_name: test
+    ports:
+      - "8080:8080"
+    depends_on:
+      - test-db
+    environment:
+      - DB_NAME=test
+      - DB_HOST=test-db
+      - DB_PORT=5432
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+
+  test-db:
+    image: postgres:14-alpine
+    container_name: test-db
+    ports:
+      - "2345:5432"
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+    volumes:
+      - /var/lib/postgresql/data/

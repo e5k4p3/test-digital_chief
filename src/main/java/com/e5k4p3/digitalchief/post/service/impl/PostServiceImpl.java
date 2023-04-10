@@ -71,7 +71,7 @@ public class PostServiceImpl implements PostService {
             log.info(commonPhrase + " был изменен контент с " + oldContent + " на " + newContent + ".");
             postToUpdate.setEdited(true);
         }
-        List<Comment> comments = commentRepository.findAllByPostId(postId);
+        List<Comment> comments = commentRepository.findAllByPostIdOrderByCreatedDesc(postId);
         postToUpdate.setComments(comments);
         return PostMapper.toPostResponseDto(postToUpdate);
     }
@@ -89,7 +89,7 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public PostResponseDto getPostById(Long postId) {
         Post postToGet = checkPostExistence(postId);
-        List<Comment> comments = commentRepository.findAllByPostId(postId);
+        List<Comment> comments = commentRepository.findAllByPostIdOrderByCreatedDesc(postId);
         postToGet.setComments(comments);
         postToGet.setViews(postToGet.getViews() + 1);
         log.info("Возвращаем данные о посте с id " + postId + ".");
@@ -101,7 +101,7 @@ public class PostServiceImpl implements PostService {
     public List<PostResponseDto> getAllPosts(Integer from, Integer size) {
         log.info("Возвращаем данные обо всех постах без фильтров.");
         return postRepository.findAll(PageRequest.of((from / size), size)).stream()
-                .peek(post -> post.setComments(commentRepository.findAllByPostId(post.getId())))
+                .peek(post -> post.setComments(commentRepository.findAllByPostIdOrderByCreatedDesc(post.getId())))
                 .peek(post -> post.setViews(post.getViews() + 1))
                 .map(PostMapper::toPostResponseDto)
                 .sorted(Comparator.comparingLong(PostResponseDto::getViews).reversed())
@@ -144,7 +144,7 @@ public class PostServiceImpl implements PostService {
         postTypedQuery.setFirstResult(pageRequest.getPageNumber());
         postTypedQuery.setMaxResults(pageRequest.getPageSize());
         List<PostResponseDto> postsToGet = postTypedQuery.getResultList().stream()
-                .peek(post -> post.setComments(commentRepository.findAllByPostId(post.getId())))
+                .peek(post -> post.setComments(commentRepository.findAllByPostIdOrderByCreatedDesc(post.getId())))
                 .peek(post -> post.setViews(post.getViews() + 1))
                 .map(PostMapper::toPostResponseDto)
                 .toList();

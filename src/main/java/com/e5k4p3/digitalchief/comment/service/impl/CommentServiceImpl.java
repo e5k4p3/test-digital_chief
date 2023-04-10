@@ -52,6 +52,7 @@ public class CommentServiceImpl implements CommentService {
         String oldText = commentToUpdate.getText();
         String newText = commentRequestDto.getText();
         commentToUpdate.setText(newText);
+        commentToUpdate.setEdited(true);
         log.info("У комментария с id " + commentId + " был изменен текст с " + oldText + " на " + newText + ".");
         return CommentMapper.toCommentResponseDto(commentToUpdate);
     }
@@ -77,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentResponseDto> getAllCommentsByPostId(Long postId) {
         checkPostExistence(postId);
         log.info("Возвращаем все комментарии к посту с id " + postId + ".");
-        return commentRepository.findAllByPostId(postId).stream()
+        return commentRepository.findAllByPostIdOrderByCreatedDesc(postId).stream()
                 .map(CommentMapper::toCommentResponseDto)
                 .toList();
     }

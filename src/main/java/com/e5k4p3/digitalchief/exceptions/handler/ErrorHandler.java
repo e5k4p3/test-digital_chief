@@ -1,5 +1,6 @@
 package com.e5k4p3.digitalchief.exceptions.handler;
 
+import com.e5k4p3.digitalchief.comment.controller.CommentController;
 import com.e5k4p3.digitalchief.exceptions.EntityAlreadyExistsException;
 import com.e5k4p3.digitalchief.exceptions.EntityNotFoundException;
 import com.e5k4p3.digitalchief.exceptions.ForbiddenOperationException;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice(assignableTypes = {UserController.class, PostController.class})
+@RestControllerAdvice(assignableTypes = {UserController.class, PostController.class, CommentController.class})
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)

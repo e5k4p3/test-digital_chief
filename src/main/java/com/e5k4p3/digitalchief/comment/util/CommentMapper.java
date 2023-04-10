@@ -25,6 +25,7 @@ public final class CommentMapper {
     public static CommentResponseDto toCommentResponseDto(Comment comment) {
         return new CommentResponseDto(
                 comment.getId(),
+                comment.getPost().getId(),
                 UserMapper.toUserResponseShortDto(comment.getAuthor()),
                 comment.getText(),
                 comment.getCreated(),

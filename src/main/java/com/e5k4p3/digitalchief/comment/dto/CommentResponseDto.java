@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentResponseDto {
     Long id;
+    Long postId;
     UserResponseShortDto author;
     String text;
     LocalDateTime created;
